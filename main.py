@@ -1,9 +1,10 @@
 #import numpy as np
+#from sys import argv
 import cv2
 import glob
 import os
 
-TIMEOUT, FREQUENCY, CURRENTFRAME = 0, 0, 0
+TIMEOUT, FREQUENCY, CURRENTFRAME, SAVEMODE = 0, 0, 0, 0
 USER, PASS,IP, PORT, ADDRESS = '', '', '', '', ''
 def makeOSsettings():
     my_cwd = os.getcwd()
@@ -17,7 +18,7 @@ def makeOSsettings():
     return path
 
 def makeSettings():
-    global TIMEOUT, FREQUENCY, USER, PASS, IP, ADDRESS, PORT, CURRENTFRAME
+    global TIMEOUT, FREQUENCY, USER, PASS, IP, ADDRESS, PORT, CURRENTFRAME, SAVEMODE
     with open('settings.txt', 'r') as f:
         lines = f.readlines()
     USER = lines[0].split()[1]
@@ -28,6 +29,7 @@ def makeSettings():
     TIMEOUT = int(lines[5].split()[1]) # in min
     FREQUENCY = int(lines[6].split()[1]) # frame per min
     CURRENTFRAME = int(lines[7].split()[1])
+    SAVEMODE = int(lines[8].split()[1])
 
 makeSettings()
 cap = cv2.VideoCapture(0)
@@ -39,6 +41,7 @@ path = makeOSsettings()
 count = 0
 fps = cap.get(cv2.CAP_PROP_FPS)
 print(f'current FPS: {fps}')
+print(f'mode of saving video is: {SAVEMODE}')
 
 while(True):
     # Capture frame-by-frame
@@ -66,15 +69,20 @@ cap.release()
 cv2.destroyAllWindows()
 
 # save video
-# img_array = []
-# for filename in glob.glob(f'{path}\\*.jpg'):
-#    img = cv2.imread(filename)
-#    height, width, layers = img.shape
-#    size = (width,height)
-#    img_array.append(img)
-#
-# out = cv2.VideoWriter(f'{path}\\video.avi',cv2.VideoWriter_fourcc(*'DIVX'), 15, size)
-#
-# for i in range(len(img_array)):
-#    out.write(img_array[i])
-# out.release()
+if SAVEMODE:
+    if len(glob.glob(f'{path}\\*.jpg')):
+        img_array = []
+        for filename in glob.glob(f'{path}\\*.jpg'):
+           img = cv2.imread(filename)
+           height, width, layers = img.shape
+           size = (width,height)
+           img_array.append(img)
+
+        out = cv2.VideoWriter(f'{path}\\video.avi',cv2.VideoWriter_fourcc(*'DIVX'), 15, size)
+
+        for i in range(len(img_array)):
+           out.write(img_array[i])
+        out.release()
+        print(f'video was saved in the {path}\\video.avi')
+    else:
+        print(f'video was not saved, there no frames, too little time!')

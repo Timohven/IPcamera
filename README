@@ -1,1 +1,32 @@
 This soft is for making time lapse from the local IP camera
+
+Before each use (except for continuing the session), you must delete the folder "faremes"
+in the location of the executable file "main.exe".
+When you run the "main.exe" file, a window will open with the current video stream from your camera.
+To stop the program normally, press "q" on the keyboard in THIS stream window.
+
+The settings file "settings.txt" must be in the same folder as the executable file!
+File "settings.txt" contains ALL the necessary session settings:
+1. USER: AMLab
+2. PASS: ***...***
+3. IP: 192.168.226.201
+4. PORT: 554
+5. ADDRESS: profile1
+6. TIMEOUT: 600
+7. FREQUENCY: 10
+8. CURRENTFRAME: 0
+9. SAVEMODE: 1
+
+Each parameter and value must be separated by a SPACE!
+1. Username - your username
+2. Password - your password
+3. IP address - IP address of your camera
+4. Port - port of your camera
+5. Address - "rtsp://IP or domain name:port/profile1" this is RTSP-connection address of your camera
+from the settings of the Network, you need only last "profile1"
+6. Timeout - max time of the session in minutes
+7. Frequency - frequency of the frame in frames per minute
+8. Current frame - you can start numeration of frames not from the zero
+(in case you want to continue an unfinished session)
+9. Save mode - you may not save the current frames in the video at the end of the session, to do this, set 0,
+otherwise 1
